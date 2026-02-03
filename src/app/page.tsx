@@ -140,7 +140,7 @@ export default function Home() {
         className={cn(
           "relative z-0 flex flex-col px-4 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
           showSplitView
-            ? "h-screen overflow-hidden justify-start py-6 md:py-8"
+            ? "h-screen overflow-hidden justify-start pt-6 pb-[52px] md:pt-8 md:pb-[56px]"
             : "min-h-screen items-center justify-center py-12"
         )}
       >
@@ -306,6 +306,28 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <footer className="pointer-events-auto fixed bottom-4 left-4 right-4 z-20">
+        <div className="mx-auto flex max-w-[92vw] flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4 py-2 text-[11px] text-green-800/90 dark:text-green-500/90">
+          <a
+            href="https://jamesmete.com"
+            target="_blank"
+            rel="noreferrer"
+            className="transition-colors hover:text-green-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-600/70 dark:hover:text-green-300"
+          >
+            Made by James Mete
+          </a>
+          <span className="text-green-700/50 dark:text-green-800/60">|</span>
+          <a
+            href="https://github.com/Jmete/geo-cache"
+            target="_blank"
+            rel="noreferrer"
+            className="transition-colors hover:text-green-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-600/70 dark:hover:text-green-300"
+          >
+            API Reference
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
