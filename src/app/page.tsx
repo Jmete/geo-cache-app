@@ -114,6 +114,13 @@ export default function Home() {
     return "NOMINAL";
   };
 
+  const handleResetView = () => {
+    setHasSearched(false);
+    setLoading(false);
+    setError(null);
+    setResult(null);
+  };
+
   return (
     <div className="relative min-h-screen bg-amber-50 dark:bg-black">
       <div className="absolute right-4 top-4 z-20">
@@ -140,7 +147,7 @@ export default function Home() {
         <div
           className={cn(
             "w-full transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-            showSplitView ? "flex-1 min-h-0 max-w-none" : "max-w-xl"
+            showSplitView ? "flex-1 min-h-0 max-w-none" : "max-w-2xl"
           )}
         >
           <div
@@ -156,31 +163,42 @@ export default function Home() {
                 "transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
                 showSplitView
                   ? "row-start-1 text-left md:col-start-1 md:row-start-1"
-                  : "text-center"
+                  : "mx-auto w-full max-w-2xl text-center md:min-w-[40rem]"
               )}
             >
-              <h1 className="text-4xl font-bold tracking-[0.2em] text-green-800 drop-shadow-[0_0_1px_rgba(0,0,0,0.3)] dark:text-green-500 dark:drop-shadow-[0_0_10px_rgba(34,197,94,0.5)] md:text-5xl">
-                GEOCACHE
+              <h1
+                className={cn(
+                  "font-bold tracking-[0.2em] text-green-800 drop-shadow-[0_0_1px_rgba(0,0,0,0.3)] dark:text-green-500 dark:drop-shadow-[0_0_10px_rgba(34,197,94,0.5)]",
+                  showSplitView ? "text-2xl md:text-3xl" : "text-4xl md:text-5xl"
+                )}
+              >
+                <button
+                  type="button"
+                  onClick={handleResetView}
+                  className="inline-flex items-center text-left transition-opacity hover:cursor-pointer hover:opacity-80 focus-visible:opacity-90 focus-visible:outline-none"
+                >
+                  GEOCACHE
+                </button>
               </h1>
               {!showSplitView && (
-                <p className="mt-2 text-xs tracking-[0.3em] text-green-700 dark:text-green-600">
-                  METE HOLDINGS
+                <p className="mt-2 text-[10px] tracking-[0.28em] text-green-700 dark:text-green-600">
+                  DETERMINISTIC CACHED GEOCODING API FOR AI AGENTS
                 </p>
               )}
             </div>
 
             <div
               className={cn(
-                "flex flex-col gap-6 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                "flex w-full flex-col gap-6 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
                 showSplitView
                   ? "row-start-2 h-full min-h-0 overflow-hidden md:col-start-1 md:row-start-2 md:mx-0 md:translate-x-0 md:items-start"
-                  : "mx-auto items-center text-center md:translate-x-8"
+                  : "mx-auto max-w-2xl items-center text-center md:min-w-[40rem]"
               )}
             >
               <div
                 className={cn(
-                  "w-full border border-green-800/30 bg-amber-100/50 p-6 dark:border-green-900 dark:bg-black/50",
-                  showSplitView ? "max-w-none" : "max-w-xl"
+                  "border border-green-800/30 bg-amber-100/50 p-6 dark:border-green-900 dark:bg-black/50",
+                  showSplitView ? "w-full" : "mx-auto w-[94%]"
                 )}
               >
                 <div className="mb-4 border-b border-green-800/30 pb-2 dark:border-green-900">
@@ -205,12 +223,7 @@ export default function Home() {
               </div>
 
               {(loading || error || result) && (
-                <div
-                  className={cn(
-                    "flex w-full flex-1 min-h-0 flex-col border border-green-800/30 bg-amber-100/50 p-6 dark:border-green-900 dark:bg-black/50 overflow-hidden",
-                    showSplitView ? "max-w-none" : "max-w-xl"
-                  )}
-                >
+                <div className="flex w-full flex-1 min-h-0 flex-col overflow-hidden border border-green-800/30 bg-amber-100/50 p-6 dark:border-green-900 dark:bg-black/50">
                   <div className="mb-4 border-b border-green-800/30 pb-2 dark:border-green-900">
                     <span className="text-xs tracking-widest text-green-700 dark:text-green-700">
                       &gt; OUTPUT
