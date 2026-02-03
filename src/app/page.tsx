@@ -131,49 +131,58 @@ export default function Home() {
 
       <div
         className={cn(
-          "relative z-0 flex min-h-screen flex-col px-4 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          "relative z-0 flex flex-col px-4 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
           showSplitView
-            ? "justify-start py-8 md:py-10"
-            : "items-center justify-center py-12"
+            ? "h-screen overflow-hidden justify-start py-6 md:py-8"
+            : "min-h-screen items-center justify-center py-12"
         )}
       >
         <div
           className={cn(
             "w-full transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-            showSplitView ? "max-w-6xl" : "max-w-xl"
+            showSplitView ? "flex-1 min-h-0 max-w-none" : "max-w-xl"
           )}
         >
           <div
             className={cn(
-              "flex flex-col gap-6 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
+              "gap-6 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
               showSplitView
-                ? "md:grid md:grid-cols-[minmax(320px,420px)_1fr] md:items-start md:gap-8"
-                : "items-center"
+                ? "grid h-full min-h-0 grid-cols-1 grid-rows-[auto_minmax(0,1fr)_minmax(0,1fr)] items-stretch md:grid-cols-[minmax(320px,440px)_1fr] md:grid-rows-[auto_minmax(0,1fr)] md:gap-8"
+                : "flex flex-col items-center"
             )}
           >
             <div
               className={cn(
+                "transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                showSplitView
+                  ? "row-start-1 text-left md:col-start-1 md:row-start-1"
+                  : "text-center"
+              )}
+            >
+              <h1 className="text-4xl font-bold tracking-[0.2em] text-green-800 drop-shadow-[0_0_1px_rgba(0,0,0,0.3)] dark:text-green-500 dark:drop-shadow-[0_0_10px_rgba(34,197,94,0.5)] md:text-5xl">
+                GEOCACHE
+              </h1>
+              {!showSplitView && (
+                <p className="mt-2 text-xs tracking-[0.3em] text-green-700 dark:text-green-600">
+                  METE HOLDINGS
+                </p>
+              )}
+            </div>
+
+            <div
+              className={cn(
                 "flex flex-col gap-6 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
                 showSplitView
-                  ? "md:mx-0 md:translate-x-0 md:items-start"
+                  ? "row-start-2 h-full min-h-0 overflow-hidden md:col-start-1 md:row-start-2 md:mx-0 md:translate-x-0 md:items-start"
                   : "mx-auto items-center text-center md:translate-x-8"
               )}
             >
               <div
                 className={cn(
-                  "transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
-                  showSplitView ? "md:text-left" : "text-center"
+                  "w-full border border-green-800/30 bg-amber-100/50 p-6 dark:border-green-900 dark:bg-black/50",
+                  showSplitView ? "max-w-none" : "max-w-xl"
                 )}
               >
-                <h1 className="text-4xl font-bold tracking-[0.2em] text-green-800 drop-shadow-[0_0_1px_rgba(0,0,0,0.3)] dark:text-green-500 dark:drop-shadow-[0_0_10px_rgba(34,197,94,0.5)] md:text-5xl">
-                  GEOCACHE
-                </h1>
-                <p className="mt-2 text-xs tracking-[0.3em] text-green-700 dark:text-green-600">
-                  METE HOLDINGS
-                </p>
-              </div>
-
-              <div className="w-full max-w-xl border border-green-800/30 bg-amber-100/50 p-6 dark:border-green-900 dark:bg-black/50">
                 <div className="mb-4 border-b border-green-800/30 pb-2 dark:border-green-900">
                   <span className="text-xs tracking-widest text-green-700 dark:text-green-700">
                     &gt; LOCATION QUERY
@@ -196,34 +205,41 @@ export default function Home() {
               </div>
 
               {(loading || error || result) && (
-                <div className="w-full max-w-xl border border-green-800/30 bg-amber-100/50 p-6 dark:border-green-900 dark:bg-black/50">
+                <div
+                  className={cn(
+                    "flex w-full flex-1 min-h-0 flex-col border border-green-800/30 bg-amber-100/50 p-6 dark:border-green-900 dark:bg-black/50 overflow-hidden",
+                    showSplitView ? "max-w-none" : "max-w-xl"
+                  )}
+                >
                   <div className="mb-4 border-b border-green-800/30 pb-2 dark:border-green-900">
                     <span className="text-xs tracking-widest text-green-700 dark:text-green-700">
                       &gt; OUTPUT
                     </span>
                   </div>
 
-                  {loading && (
-                    <div className="flex items-center justify-center py-8">
-                      <div className="text-sm tracking-widest text-green-700 animate-pulse dark:text-green-500">
-                        PROCESSING REQUEST...
+                  <div className="geocache-scroll flex-1 min-h-0 overflow-y-auto pr-2">
+                    {loading && (
+                      <div className="flex items-center justify-center py-8">
+                        <div className="text-sm tracking-widest text-green-700 animate-pulse dark:text-green-500">
+                          PROCESSING REQUEST...
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {error && (
-                    <div className="py-4">
-                      <div className="text-sm tracking-wider text-red-700 dark:text-red-500">
-                        ERROR: {error.toUpperCase()}
+                    {error && (
+                      <div className="py-4">
+                        <div className="text-sm tracking-wider text-red-700 dark:text-red-500">
+                          ERROR: {error.toUpperCase()}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {result && !loading && (
-                    <pre className="overflow-x-auto text-xs leading-relaxed text-green-800 dark:text-green-500">
-                      {JSON.stringify(result, null, 2)}
-                    </pre>
-                  )}
+                    {result && !loading && (
+                      <pre className="overflow-x-auto text-xs leading-relaxed text-green-800 dark:text-green-500">
+                        {JSON.stringify(result, null, 2)}
+                      </pre>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -232,7 +248,7 @@ export default function Home() {
               className={cn(
                 "relative w-full transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
                 showSplitView
-                  ? "h-[45vh] translate-x-0 opacity-100 md:h-[70vh]"
+                  ? "row-start-3 h-full min-h-0 translate-x-0 opacity-100 md:col-start-2 md:row-start-2 md:self-stretch"
                   : "pointer-events-none h-0 translate-x-6 opacity-0"
               )}
             >
