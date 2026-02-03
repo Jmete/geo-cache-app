@@ -52,7 +52,7 @@ export default function Home() {
     : [0, 20];
 
   useEffect(() => {
-    if (!hasCoordinates || !mapRef.current) return;
+    if (!hasCoordinates || !result || !mapRef.current) return;
     mapRef.current.flyTo({
       center: [result.point.lon, result.point.lat],
       zoom: 10,
