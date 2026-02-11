@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, FormEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/mode-toggle";
 import {
@@ -30,11 +30,11 @@ interface GeocacheResult {
   cache: {
     hit: boolean;
   };
-  point: {
-    lat: number;
-    lon: number;
-  };
-  bbox: number[];
+  point?: {
+    lat?: number;
+    lon?: number;
+  } | null;
+  bbox?: number[];
 }
 
 export default function Home() {
@@ -45,21 +45,33 @@ export default function Home() {
   const [hasSearched, setHasSearched] = useState(false);
   const mapRef = useRef<MapRef | null>(null);
 
+  const coordinates = useMemo(() => {
+    if (
+      !result ||
+      typeof result.point?.lon !== "number" ||
+      !Number.isFinite(result.point.lon) ||
+      typeof result.point?.lat !== "number" ||
+      !Number.isFinite(result.point.lat)
+    ) {
+      return null;
+    }
+
+    return [result.point.lon, result.point.lat] as [number, number];
+  }, [result]);
+
   const showSplitView = hasSearched;
-  const hasCoordinates = Boolean(result?.point);
-  const mapCenter: [number, number] = result
-    ? [result.point.lon, result.point.lat]
-    : [0, 20];
+  const hasCoordinates = Boolean(coordinates);
+  const mapCenter: [number, number] = coordinates ?? [0, 20];
 
   useEffect(() => {
-    if (!hasCoordinates || !result || !mapRef.current) return;
+    if (!coordinates || !mapRef.current) return;
     mapRef.current.flyTo({
-      center: [result.point.lon, result.point.lat],
+      center: coordinates,
       zoom: 10,
       duration: 1200,
       essential: true,
     });
-  }, [hasCoordinates, result]);
+  }, [coordinates]);
 
   useEffect(() => {
     if (!showSplitView) return;
@@ -275,16 +287,18 @@ export default function Home() {
                       ? "LOCKED"
                       : loading
                         ? "LOCATING"
+                        : result
+                          ? "NO COORDINATES"
                         : "STANDBY"}
                   </span>
                 </div>
                 <div className="relative flex-1 overflow-hidden">
                   {showSplitView && (
                     <Map ref={mapRef} center={mapCenter} zoom={hasCoordinates ? 10 : 1.4}>
-                      {hasCoordinates && result && (
+                      {coordinates && (
                         <MapMarker
-                          longitude={result.point.lon}
-                          latitude={result.point.lat}
+                          longitude={coordinates[0]}
+                          latitude={coordinates[1]}
                         >
                           <MarkerContent className="drop-shadow-[0_0_12px_rgba(34,197,94,0.45)]">
                             <div className="h-4 w-4 rounded-full border border-green-200/60 bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.6)] dark:border-green-400/70 dark:bg-green-400" />
@@ -297,6 +311,8 @@ export default function Home() {
                     <div className="absolute inset-0 flex items-center justify-center text-xs tracking-widest text-green-700/70 dark:text-green-800">
                       {loading
                         ? "ACQUIRING COORDINATES..."
+                        : result
+                          ? "NO COORDINATES RETURNED"
                         : "AWAITING COORDINATES"}
                     </div>
                   )}
