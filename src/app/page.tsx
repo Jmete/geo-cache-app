@@ -194,7 +194,7 @@ export default function Home() {
               </h1>
               {!showSplitView && (
                 <p className="mt-2 text-[10px] tracking-[0.28em] text-green-700 dark:text-green-600">
-                  DETERMINISTIC CACHED GEOCODING API FOR AI AGENTS
+                  CACHED GEOCODING API FOR AI AGENTS
                 </p>
               )}
             </div>
@@ -217,6 +217,9 @@ export default function Home() {
                   <span className="text-xs tracking-widest text-green-700 dark:text-green-700">
                     &gt; LOCATION QUERY
                   </span>
+                  <p className="mt-2 text-[10px] tracking-[0.22em] text-green-700/80 dark:text-green-800">
+                    FORMAT: CITY, REGION, COUNTRY
+                  </p>
                 </div>
                 <form onSubmit={handleSubmit}>
                   <Input
